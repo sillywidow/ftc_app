@@ -2,6 +2,7 @@ package org.firstinspires.ftc.team8200;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Hardware {
     // Universal OpMode Properties
@@ -10,6 +11,7 @@ public class Hardware {
 
     // Local OpMode Properties
     HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     // Constructor
     public Hardware() {}
