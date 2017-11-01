@@ -21,8 +21,8 @@ public class Hardware {
         hwMap = hardwareMap;
 
         // Names for Hardware Configuration
-        leftMotor = hwMap.dcMotor.get("leftmotor");
-        rightMotor = hwMap.dcMotor.get("rightmotor");
+        leftMotor = hwMap.get(DcMotor.class, "leftmotor");
+        rightMotor = hwMap.get(DcMotor.class, "rightmotor");
 
         // Motor Direction
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -33,11 +33,7 @@ public class Hardware {
         rightMotor.setPower(0);
 
         // Change to RUN_USING_ENCODERS if encoders are installed.
-        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Set all motors to run without encoders unless they're being used
-        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
