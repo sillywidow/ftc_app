@@ -48,8 +48,8 @@ public class Hardware {
         longArm.setPower(0);
         claw.setPosition(CLAW_HOME);
 
-        // Set all motors to run without encoders unless they're being used
-        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Change to RUN_USING_ENCODERS if encoders are installed.
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
