@@ -2,14 +2,10 @@ package org.firstinspires.ftc.team8200;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-
-@TeleOp(name="TestBot", group="Linear Opmode")
-
+@TeleOp(name="TestBot", group="Testing")
 public class TestBot extends LinearOpMode {
 
     // Declare OpMode members.

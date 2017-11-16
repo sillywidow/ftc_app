@@ -1,15 +1,22 @@
 package org.firstinspires.ftc.team8200;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-@Autonomous(name = "PlaceCube", group = "Autonomous")
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+@Autonomous(name = "PlaceCube", group = "Autonomous")
 public class Auto_PlaceCube extends LinearOpMode {
+    // Import objects used in robot
     Hardware robot = new Hardware();
     private ElapsedTime runtime = new ElapsedTime();
+    VuforiaLocalizer vuforia;
 
     // Static variables for general use
     static final double DRIVE_SPEED = 0.5;
@@ -31,7 +38,7 @@ public class Auto_PlaceCube extends LinearOpMode {
         // Reset encoders
         stopAndResetEncoders();
 
-        // Wait for "PLAY"
+        // Wait for "PLAY" to be pressed
         waitForStart();
 
         // Run methods in sequence
@@ -45,7 +52,9 @@ public class Auto_PlaceCube extends LinearOpMode {
     }
 
     // Read and store the value of the pattern
-    public void readPattern() {}
+    public void readPattern() {
+        readVuMark();
+    }
 
     // Move forward to Gems
     public void moveToGems() {}
@@ -118,5 +127,50 @@ public class Auto_PlaceCube extends LinearOpMode {
         else if (degrees < 0) { // CCW turns
             move(TURN_SPEED, -motorInches, motorInches, 5000);
         }
+    }
+
+
+
+    public String readVuMark() {
+        String vuMarkPattern = "";
+        // Store parameters used to initialize the Vuforia engine
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        /* UNCOMMENT THIS IF WANTING TO TEST WITH A VIEW ON SCREEN AND COMMENT LINE ABOVE
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        */
+
+        // Add license key
+        parameters.vuforiaLicenseKey = "ARH6A3z/////AAAAGZ4wVweTjU73lDoZeCr/rzwpfNAFaWSGUn4qhsRk/g7XznybiUzddzhqWfAWncGfPY8Q8fqY3lozXjMIMdWiZYPQkmYSmb2NkIry1JizLHG3PvtS5yr3fYCT0Tpia25pg03b3lQeoEVYRQUTnAFXQnO4wSwGOmz2wWWMg0rNDBN6gxnUipEKrLaLajvGvwtmkl/EB0P3Rib3zTgQzJXxgi3nHVV4m06LZ3twCd0l4p4EA7W2Js1V+iR7ue94ObAH4FUfJ0qcOsnlnM+DDq5LdJOAP5HbgldfzsncBeqyRA8O4u4TZ6ABu+4u8T1T/tY1dG7doWkIDjFD/z40F4bEQYGrEo1VuEnsURpIZugF9Ahc";
+
+        // Select the camera the robot will use
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+
+        // Start Vuforia engine with the 2 parameters that were taken
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        // Load tracking dataset
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+
+        // Activate tracker
+        relicTrackables.activate();
+
+        while (opModeIsActive()) {
+            // Variable that stores value from what's seen
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+            if (vuMark == RelicRecoveryVuMark.LEFT) {
+                vuMarkPattern = "left";
+            } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                vuMarkPattern = "center";
+            } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                vuMarkPattern = "right";
+            } else {
+                vuMarkPattern = "";
+            }
+        }
+        return vuMarkPattern;
     }
 }
