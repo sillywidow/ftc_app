@@ -145,7 +145,7 @@ public class Auto_PlaceCube extends LinearOpMode {
         parameters.vuforiaLicenseKey = "ARH6A3z/////AAAAGZ4wVweTjU73lDoZeCr/rzwpfNAFaWSGUn4qhsRk/g7XznybiUzddzhqWfAWncGfPY8Q8fqY3lozXjMIMdWiZYPQkmYSmb2NkIry1JizLHG3PvtS5yr3fYCT0Tpia25pg03b3lQeoEVYRQUTnAFXQnO4wSwGOmz2wWWMg0rNDBN6gxnUipEKrLaLajvGvwtmkl/EB0P3Rib3zTgQzJXxgi3nHVV4m06LZ3twCd0l4p4EA7W2Js1V+iR7ue94ObAH4FUfJ0qcOsnlnM+DDq5LdJOAP5HbgldfzsncBeqyRA8O4u4TZ6ABu+4u8T1T/tY1dG7doWkIDjFD/z40F4bEQYGrEo1VuEnsURpIZugF9Ahc";
 
         // Select the camera the robot will use
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         // Start Vuforia engine with the 2 parameters that were taken
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
@@ -163,14 +163,22 @@ public class Auto_PlaceCube extends LinearOpMode {
 
             if (vuMark == RelicRecoveryVuMark.LEFT) {
                 vuMarkPattern = "left";
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
             } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                vuMarkPattern = "center";
+                vuMarkPattern = "left";
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
             } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 vuMarkPattern = "right";
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
             } else {
                 vuMarkPattern = "";
             }
         }
+        telemetry.addData("VuMark", "%s visible", vuMarkPattern);
+        telemetry.update();
         return vuMarkPattern;
     }
 }
