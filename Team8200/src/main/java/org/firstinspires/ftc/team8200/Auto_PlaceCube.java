@@ -1,22 +1,29 @@
 package org.firstinspires.ftc.team8200;
 
+import android.graphics.Color;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.util.Locale;
+
 @Autonomous(name = "PlaceCube", group = "Autonomous")
 public class Auto_PlaceCube extends LinearOpMode {
     // Import objects used in robot
     Hardware robot = new Hardware();
-    private ElapsedTime runtime = new ElapsedTime();
     VuforiaLocalizer vuforia;
+    ColorSensor colorSensor;
+    DistanceSensor distanceSensor;
+    private ElapsedTime runtime = new ElapsedTime();
 
     // Static variables for general use
     static final double DRIVE_SPEED = 0.5;
@@ -29,6 +36,12 @@ public class Auto_PlaceCube extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 2.8; // For figuring circumference
     static final double PI = 3.1415;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
+
+    // Static variables for color sensor
+    // Change these depending on what color this opmode will function for // Erase this comment after values are final
+    static final int RED_THRESHOLD = 100;
+    static final int BLUE_THRESHOLD = 100;
+    static final int GREEN_THRESHOLD = 100;
 
     @Override
     public void runOpMode() {
@@ -51,28 +64,44 @@ public class Auto_PlaceCube extends LinearOpMode {
         dropGlyph();
     }
 
+    // TODO Mention how we might need to add a method for picking up the cube when the match starts
+
     // Read and store the value of the pattern
-    public void readPattern() {
-        readVuMark();
-    }
+    public void readPattern() {readVuMark();}
 
     // Move forward to Gems
     public void moveToGems() {}
 
     // Scan Gems' colors
-    public void scanGemColor() {}
+    public void scanGemColor() {readColor();}
 
     // Push correct Gem
-    public void pushGem() {}
+    public void pushGem() {
+        if (readColor().equals("red")) {
+
+        } else if (readColor().equals("blue")) {
+
+        }
+    }
 
     // Rotate to Cryptobox
     public void alignToCryptobox() {}
 
     // Find correct column
-    public void findColumn() {}
+    public void findColumn() {
+        if (readVuMark().equals("left")) {
+
+        } else if (readVuMark().equals("center")) {
+
+        } else if (readVuMark().equals("right")) {
+
+        }
+    }
 
     // Drop Glyph
-    public void dropGlyph() {}
+    public void dropGlyph() {
+        robot.claw.setPosition(0);
+    }
 
     // Encoder enabler
     public void move(double speed, double leftInches, double rightInches, double timeoutS) {
@@ -129,8 +158,6 @@ public class Auto_PlaceCube extends LinearOpMode {
         }
     }
 
-
-
     public String readVuMark() {
         String vuMarkPattern = "";
         // Store parameters used to initialize the Vuforia engine
@@ -180,5 +207,42 @@ public class Auto_PlaceCube extends LinearOpMode {
         telemetry.addData("VuMark", "%s visible", vuMarkPattern);
         telemetry.update();
         return vuMarkPattern;
+    }
+
+    public String readColor() {
+        // Store found color
+        String color = "none";
+
+        // Store HSV Values
+        float hsvValues[] = {0F, 0F, 0F};
+
+        // Scale to convert RGB to HSV
+        final double SCALE_FACTOR = 255;
+
+        while (opModeIsActive()) {
+            // Convert from RGB to HSV
+            Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR), (int) (colorSensor.green() * SCALE_FACTOR), (int) (colorSensor.blue() * SCALE_FACTOR), hsvValues);
+
+            // Show values at Driver Station
+            telemetry.addData("Distance (cm)", String.format(Locale.US, "%.02f", distanceSensor.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha", colorSensor.alpha());
+            telemetry.addData("Red  ", colorSensor.red());
+            telemetry.addData("Green", colorSensor.green());
+            telemetry.addData("Blue ", colorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+            telemetry.addData("Saturation", hsvValues[1]);
+            telemetry.addData("Value", hsvValues[2]);
+            telemetry.update();
+
+            // Considered adding a timer just to confirm that the color is accurate
+            // TODO talk with the team to make sure this approach with time is agreed upon
+            runtime.reset();
+            if (runtime.seconds() > 2 && colorSensor.red() > RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() < BLUE_THRESHOLD) { // Condition for RED
+                color = "red";
+            } else if (runtime.seconds() > 2 && colorSensor.red() < RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() > BLUE_THRESHOLD) { // Condition for BLUE
+                color = "blue";
+            }
+        }
+        return color;
     }
 }

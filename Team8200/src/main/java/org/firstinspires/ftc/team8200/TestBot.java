@@ -8,26 +8,28 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="TestBot", group="Testing")
 public class TestBot extends LinearOpMode {
 
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-
+    // Import objects used in robot
     Hardware robot = new Hardware();
+    private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        double servoPosition = 0.2;
-        double shortArmPower = 0.0;
-        double longArmPower = 0.0;
+        // Set motors and servos to initial position
+        double servoPosition = 0;
+        double shortArmPower = 0;
+        double longArmPower = 0;
+
+        // Initialize Hardware
         robot.init(hardwareMap);
 
-        // Wait for the game to start (driver presses PLAY)
+        // Wait for "PLAY" to be pressed
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
+        // Run until "STOP" is pressed
         while (opModeIsActive()) {
             if (gamepad1.right_stick_y != 0) {
                 shortArmPower = gamepad1.right_stick_y;

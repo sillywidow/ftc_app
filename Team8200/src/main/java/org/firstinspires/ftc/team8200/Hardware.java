@@ -1,33 +1,30 @@
 package org.firstinspires.ftc.team8200;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Hardware {
     // Universal OpMode Properties
-    public DcMotor leftMotor = null;
-    public DcMotor rightMotor = null;
-    public DcMotor shortArm = null;
-    public DcMotor longArm = null;
-    public Servo claw = null;
+    public DcMotor leftMotor;
+    public DcMotor rightMotor;
+    public DcMotor shortArm;
+    public DcMotor longArm;
+    public Servo claw;
+    public ColorSensor colorSensor;
+    public DistanceSensor distanceSensor;
 
     // Local OpMode Properties
-    HardwareMap hwMap = null;
-    private ElapsedTime period = new ElapsedTime();
-    public final static double ARM_HOME = .2;
-    public final static double CLAW_HOME = .2;
-    public final static double ARM_MIN_RANGE = .2;
-    public final static double ARM_MAX_RANGE = .9;
-    public final static double CLAW_MIN_RANGE = .2;
-    public final static double CLAW_MAX_RANGE = .7;
+    HardwareMap hwMap;
 
     // Constructor
     public Hardware() {}
 
     // Initialize Hardware Interfaces
     public void init(HardwareMap hardwareMap) {
+        // Reference the hardware map
         hwMap = hardwareMap;
 
         // Names for Hardware Configuration
@@ -36,6 +33,8 @@ public class Hardware {
         shortArm = hwMap.get(DcMotor.class, "shortarm");
         longArm = hwMap.get(DcMotor.class, "longarm");
         claw = hwMap.get(Servo.class, "claw");
+        colorSensor = hwMap.get(ColorSensor.class, "sensor");
+        distanceSensor = hwMap.get(DistanceSensor.class, "sensor");
 
         // Motor Direction
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -46,9 +45,9 @@ public class Hardware {
         rightMotor.setPower(0);
         shortArm.setPower(0);
         longArm.setPower(0);
-        claw.setPosition(CLAW_HOME);
+        claw.setPosition(0);
 
-        // Change to RUN_USING_ENCODERS if encoders are installed.
+        // Enable encoders
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
