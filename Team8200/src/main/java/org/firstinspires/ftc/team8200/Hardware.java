@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.team8200;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -13,8 +11,6 @@ public class Hardware {
     public DcMotor shortArm;
     public DcMotor longArm;
     public Servo claw;
-    public ColorSensor colorSensor;
-    public DistanceSensor distanceSensor;
 
     // Local OpMode Properties
     HardwareMap hwMap;
@@ -33,8 +29,6 @@ public class Hardware {
         shortArm = hwMap.get(DcMotor.class, "shortarm");
         longArm = hwMap.get(DcMotor.class, "longarm");
         claw = hwMap.get(Servo.class, "claw");
-        colorSensor = hwMap.get(ColorSensor.class, "sensor");
-        distanceSensor = hwMap.get(DistanceSensor.class, "sensor");
 
         // Motor Direction
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors

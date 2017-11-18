@@ -48,6 +48,10 @@ public class Auto_PlaceCube extends LinearOpMode {
         // Initialize Hardware
         robot.init(hardwareMap);
 
+        // Names for Hardware Configuration
+        colorSensor = hardwareMap.get(ColorSensor.class, "sensor");
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor");
+
         // Reset encoders
         stopAndResetEncoders();
 
@@ -236,11 +240,16 @@ public class Auto_PlaceCube extends LinearOpMode {
 
             // Considered adding a timer just to confirm that the color is accurate
             // TODO talk with the team to make sure this approach with time is agreed upon
-            runtime.reset();
-            if (runtime.seconds() > 2 && colorSensor.red() > RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() < BLUE_THRESHOLD) { // Condition for RED
-                color = "red";
-            } else if (runtime.seconds() > 2 && colorSensor.red() < RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() > BLUE_THRESHOLD) { // Condition for BLUE
-                color = "blue";
+            if (colorSensor.red() > RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() < BLUE_THRESHOLD) { // Condition for RED
+                runtime.reset();
+                if (runtime.seconds() > 2) {
+                    color = "red";
+                }
+            } else if (colorSensor.red() < RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() > BLUE_THRESHOLD) { // Condition for BLUE
+                runtime.reset();
+                if (runtime.seconds() > 2) {
+                    color = "blue";
+                }
             }
         }
         return color;

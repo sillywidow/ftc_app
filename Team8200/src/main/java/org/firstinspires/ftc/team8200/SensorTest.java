@@ -13,13 +13,15 @@ import java.util.Locale;
 @Autonomous(name="Color Test", group ="Testing")
 public class SensorTest extends LinearOpMode {
     // Import objects used in robot
-    Hardware robot = new Hardware();
     ColorSensor colorSensor;
     DistanceSensor distanceSensor;
 
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap);
+        // Names for Hardware Configuration
+        colorSensor = hardwareMap.get(ColorSensor.class, "sensor");
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor");
+
         // Store HSV Values
         float hsvValues[] = {0F, 0F, 0F};
 
