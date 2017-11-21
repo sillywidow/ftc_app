@@ -38,8 +38,8 @@ public class Auto_PlaceCube extends LinearOpMode {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
 
     // Static variables for sensors
-    static String vuMarkPattern = "";
-    static String color = "none";
+    private String vuMarkPattern = "";
+    private String color = "";
 
     @Override
     public void runOpMode() {
