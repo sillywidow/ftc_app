@@ -37,14 +37,9 @@ public class Auto_PlaceCube extends LinearOpMode {
     static final double PI = 3.1415;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
 
-    // Static variables for color sensor
-    // Change these depending on what color this opmode will function for // Erase this comment after values are final
-    static final int RED_THRESHOLD = 100;
-    static final int BLUE_THRESHOLD = 100;
-    static final int GREEN_THRESHOLD = 100;
-
-
-    String vuMarkPattern = "";
+    // Static variables for sensors
+    static String vuMarkPattern = "";
+    static String color = "none";
 
     @Override
     public void runOpMode() {
@@ -235,9 +230,6 @@ public class Auto_PlaceCube extends LinearOpMode {
     }
 
     public String readColor() {
-        // Store found color
-        String color = "none";
-
         // Store HSV Values
         float hsvValues[] = {0F, 0F, 0F};
 
