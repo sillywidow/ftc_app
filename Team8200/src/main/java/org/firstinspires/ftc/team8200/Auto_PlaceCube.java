@@ -250,7 +250,6 @@ public class Auto_PlaceCube extends LinearOpMode {
             telemetry.update();
 
             // Considered adding a timer just to confirm that the color is accurate
-            // TODO talk with the team to make sure this approach with time is agreed upon
             if (colorSensor.red() > colorSensor.green() && colorSensor.red() > colorSensor.blue()) { // Condition for RED
                 if (runtime.seconds() > 2) {
                     color = "red";

@@ -11,6 +11,11 @@ public class Hardware {
     public DcMotor shortArm;
     public DcMotor longArm;
     public Servo claw;
+    // 4 motors for drive train
+    // 2 motors for intake (wheel collector) + 2 servos
+    // 1 motor for elevator
+    // Maybe: 1 motor or 1 servo for extending the arm
+    // 4 servos for gripper
 
     // Local OpMode Properties
     HardwareMap hwMap;
