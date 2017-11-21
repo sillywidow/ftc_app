@@ -43,6 +43,9 @@ public class Auto_PlaceCube extends LinearOpMode {
     static final int BLUE_THRESHOLD = 100;
     static final int GREEN_THRESHOLD = 100;
 
+
+    String vuMarkPattern = "";
+
     @Override
     public void runOpMode() {
         // Initialize Hardware
@@ -60,51 +63,67 @@ public class Auto_PlaceCube extends LinearOpMode {
 
         // Run methods in sequence
         readPattern();
+        sleep(1000);
         moveToGems();
+        sleep(1000);
         scanGemColor();
+        sleep(1000);
         pushGem();
+        sleep(1000);
         alignToCryptobox();
+        sleep(1000);
         findColumn();
+        sleep(1000);
         dropGlyph();
     }
 
     // TODO Mention how we might need to add a method for picking up the cube when the match starts
 
     // Read and store the value of the pattern
-    public void readPattern() {readVuMark();}
+    public void readPattern() {
+        readVuMark();
+        telemetry.addData("On", "vumark");
+        telemetry.update();
+    }
 
     // Move forward to Gems
-    public void moveToGems() {}
+    public void moveToGems() {
+        telemetry.addData("On", "moving to gem");
+        telemetry.update();
+    }
 
     // Scan Gems' colors
-    public void scanGemColor() {readColor();}
+    public void scanGemColor() {
+        readColor();
+    }
 
     // Push correct Gem
     public void pushGem() {
-        if (readColor().equals("red")) {
-
-        } else if (readColor().equals("blue")) {
-
-        }
+        telemetry.addData("On", "push gem");
+        telemetry.update();
     }
 
     // Rotate to Cryptobox
-    public void alignToCryptobox() {}
+    public void alignToCryptobox() {
+        telemetry.addData("On", "crypto");
+        telemetry.update();
+    }
 
     // Find correct column
     public void findColumn() {
-        if (readVuMark().equals("left")) {
-
-        } else if (readVuMark().equals("center")) {
-
-        } else if (readVuMark().equals("right")) {
-
+        if (vuMarkPattern.equals("left")) {
+            telemetry.addData("Column", "l");
+        } else if (vuMarkPattern.equals("center")) {
+            telemetry.addData("Column", "c");
+        } else if (vuMarkPattern.equals("right")) {
+            telemetry.addData("Column", "r");
         }
+        telemetry.update();
     }
 
     // Drop Glyph
     public void dropGlyph() {
-        robot.claw.setPosition(0);
+        //robot.claw.setPosition(0);
     }
 
     // Encoder enabler
@@ -163,7 +182,6 @@ public class Auto_PlaceCube extends LinearOpMode {
     }
 
     public String readVuMark() {
-        String vuMarkPattern = "";
         // Store parameters used to initialize the Vuforia engine
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
@@ -196,14 +214,17 @@ public class Auto_PlaceCube extends LinearOpMode {
                 vuMarkPattern = "left";
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
+                return vuMarkPattern;
             } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                 vuMarkPattern = "left";
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
+                return vuMarkPattern;
             } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 vuMarkPattern = "right";
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
+                return vuMarkPattern;
             } else {
                 vuMarkPattern = "";
             }
@@ -223,6 +244,7 @@ public class Auto_PlaceCube extends LinearOpMode {
         // Scale to convert RGB to HSV
         final double SCALE_FACTOR = 255;
 
+        runtime.reset();
         while (opModeIsActive()) {
             // Convert from RGB to HSV
             Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR), (int) (colorSensor.green() * SCALE_FACTOR), (int) (colorSensor.blue() * SCALE_FACTOR), hsvValues);
@@ -233,22 +255,19 @@ public class Auto_PlaceCube extends LinearOpMode {
             telemetry.addData("Red  ", colorSensor.red());
             telemetry.addData("Green", colorSensor.green());
             telemetry.addData("Blue ", colorSensor.blue());
-            telemetry.addData("Hue", hsvValues[0]);
-            telemetry.addData("Saturation", hsvValues[1]);
-            telemetry.addData("Value", hsvValues[2]);
             telemetry.update();
 
             // Considered adding a timer just to confirm that the color is accurate
             // TODO talk with the team to make sure this approach with time is agreed upon
-            if (colorSensor.red() > RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() < BLUE_THRESHOLD) { // Condition for RED
-                runtime.reset();
+            if (colorSensor.red() > colorSensor.green() && colorSensor.red() > colorSensor.blue()) { // Condition for RED
                 if (runtime.seconds() > 2) {
                     color = "red";
+                    return color;
                 }
-            } else if (colorSensor.red() < RED_THRESHOLD && colorSensor.green() < GREEN_THRESHOLD && colorSensor.blue() > BLUE_THRESHOLD) { // Condition for BLUE
-                runtime.reset();
+            } else if (colorSensor.blue() > colorSensor.red() && colorSensor.blue() > colorSensor.green()) { // Condition for BLUE
                 if (runtime.seconds() > 2) {
                     color = "blue";
+                    return color;
                 }
             }
         }
