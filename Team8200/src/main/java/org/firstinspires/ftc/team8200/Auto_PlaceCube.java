@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
 import java.util.Locale;
 
 @Autonomous(name = "PlaceCube", group = "Autonomous")
@@ -72,37 +71,20 @@ public class Auto_PlaceCube extends LinearOpMode {
         dropGlyph();
     }
 
-    // TODO Mention how we might need to add a method for picking up the cube when the match starts
-
     // Read and store the value of the pattern
-    public void readPattern() {
-        readVuMark();
-        telemetry.addData("On", "vumark");
-        telemetry.update();
-    }
+    public void readPattern() {readVuMark();}
 
     // Move forward to Gems
-    public void moveToGems() {
-        telemetry.addData("On", "moving to gem");
-        telemetry.update();
-    }
+    public void moveToGems() {}
 
     // Scan Gems' colors
-    public void scanGemColor() {
-        readColor();
-    }
+    public void scanGemColor() {readColor();}
 
     // Push correct Gem
-    public void pushGem() {
-        telemetry.addData("On", "push gem");
-        telemetry.update();
-    }
+    public void pushGem() {}
 
     // Rotate to Cryptobox
-    public void alignToCryptobox() {
-        telemetry.addData("On", "crypto");
-        telemetry.update();
-    }
+    public void alignToCryptobox() {}
 
     // Find correct column
     public void findColumn() {
@@ -117,9 +99,7 @@ public class Auto_PlaceCube extends LinearOpMode {
     }
 
     // Drop Glyph
-    public void dropGlyph() {
-        //robot.claw.setPosition(0);
-    }
+    public void dropGlyph() {}
 
     // Encoder enabler
     public void move(double speed, double leftInches, double rightInches, double timeoutS) {
@@ -129,39 +109,39 @@ public class Auto_PlaceCube extends LinearOpMode {
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            robot.leftMotor.setTargetPosition(newLeftTarget);
-            robot.rightMotor.setTargetPosition(newRightTarget);
+            newLeftTarget = robot.backMotorLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = robot.backMotorRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            robot.backMotorLeft.setTargetPosition(newLeftTarget);
+            robot.backMotorRight.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.backMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.backMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // Reset the timeout time and start motion
             runtime.reset();
-            robot.leftMotor.setPower(Math.abs(speed));
-            robot.rightMotor.setPower(Math.abs(speed));
+            robot.backMotorLeft.setPower(Math.abs(speed));
+            robot.backMotorRight.setPower(Math.abs(speed));
 
             // Stop all motion
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
+            robot.backMotorLeft.setPower(0);
+            robot.backMotorRight.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.backMotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.backMotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
     // Reset encoders and kill motors
     public void stopAndResetEncoders() {
-        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.backMotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.backMotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         sleep(50); // Wait 50ms to make sure it fully processes
 
-        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.backMotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.backMotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     // Rotate with encoders ( > 0 goes CW, < 0 goes CCW )
@@ -224,8 +204,6 @@ public class Auto_PlaceCube extends LinearOpMode {
                 vuMarkPattern = "";
             }
         }
-        telemetry.addData("VuMark", "%s visible", vuMarkPattern);
-        telemetry.update();
         return vuMarkPattern;
     }
 

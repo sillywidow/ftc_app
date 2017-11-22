@@ -6,16 +6,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hardware {
     // Universal OpMode Properties
-    public DcMotor leftMotor;
-    public DcMotor rightMotor;
-    public DcMotor shortArm;
-    public DcMotor longArm;
-    public Servo claw;
-    // 4 motors for drive train
-    // 2 motors for intake (wheel collector) + 2 servos
-    // 1 motor for elevator
-    // Maybe: 1 motor or 1 servo for extending the arm
-    // 4 servos for gripper
+    public DcMotor frontMotorLeft;
+    public DcMotor frontMotorRight;
+    public DcMotor backMotorLeft;
+    public DcMotor backMotorRight;
+    public DcMotor collectorMotorLeft;
+    public DcMotor collectorMotorRight;
+    public DcMotor elevator;
+    public DcMotor arm;
+    public Servo collectorServoLeft;
+    public Servo collectorServoRight;
+    // Create 4 servos for gripper
 
     // Local OpMode Properties
     HardwareMap hwMap;
@@ -29,25 +30,37 @@ public class Hardware {
         hwMap = hardwareMap;
 
         // Names for Hardware Configuration
-        leftMotor = hwMap.get(DcMotor.class, "leftmotor");
-        rightMotor = hwMap.get(DcMotor.class, "rightmotor");
-        shortArm = hwMap.get(DcMotor.class, "shortarm");
-        longArm = hwMap.get(DcMotor.class, "longarm");
-        claw = hwMap.get(Servo.class, "claw");
+        frontMotorLeft = hwMap.get(DcMotor.class, "frontmotorleft");
+        frontMotorRight = hwMap.get(DcMotor.class, "frontmotorright");
+        backMotorLeft = hwMap.get(DcMotor.class, "backmotorleft");
+        backMotorRight = hwMap.get(DcMotor.class, "backmotorright");
+        collectorMotorLeft = hwMap.get(DcMotor.class, "collectormotorleft");
+        collectorMotorRight = hwMap.get(DcMotor.class, "collectormotorright");
+        elevator = hwMap.get(DcMotor.class, "elevator");
+        arm = hwMap.get(DcMotor.class, "arm");
+        collectorServoLeft = hwMap.get(Servo.class, "collectorservoleft");
+        collectorServoRight = hwMap.get(Servo.class, "collectorservoright");
 
         // Motor Direction
-        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightMotor.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+        frontMotorLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        backMotorLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        frontMotorRight.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+        backMotorRight.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
 
         // Set motors and servos to initial position
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        shortArm.setPower(0);
-        longArm.setPower(0);
-        claw.setPosition(0);
+        frontMotorLeft.setPower(0);
+        frontMotorRight.setPower(0);
+        backMotorLeft.setPower(0);
+        backMotorRight.setPower(0);
+        collectorMotorLeft.setPower(0);
+        collectorMotorRight.setPower(0);
+        elevator.setPower(0);
+        arm.setPower(0);
+        collectorServoLeft.setPosition(0);
+        collectorServoRight.setPosition(0);
 
         // Enable encoders
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backMotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backMotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
