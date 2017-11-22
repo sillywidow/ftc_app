@@ -15,10 +15,22 @@ public class Tele_Default extends LinearOpMode {
         // Initialize Hardware
         robot.init(hardwareMap);
 
+        // Drive variables
+        double leftSpeed, rightSpeed;
+
         // Wait for "PLAY" to be pressed
         waitForStart();
 
         // Run until "STOP" is pressed
-        while (opModeIsActive()) {}
+        while (opModeIsActive()) {
+            // Drive speeds
+            leftSpeed = -gamepad1.left_stick_y;
+            rightSpeed = -gamepad1.right_stick_y;
+            robot.frontMotorLeft.setPower(leftSpeed);
+            robot.frontMotorRight.setPower(rightSpeed);
+            
+            // Pause for 40 mS each cycle = update 25 times a second.
+            sleep(40);
+        }
     }
 }

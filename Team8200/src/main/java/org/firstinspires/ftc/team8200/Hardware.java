@@ -65,7 +65,7 @@ public class Hardware {
         harvesterMotorLeft.setPower(0);
         harvesterMotorRight.setPower(0);
         arm.setPosition(0);
-        
+
         harvesterServoLeft.setPosition(0);
         harvesterServoLeft.setPosition(0);
         holdTopLeft.setPosition(0);
