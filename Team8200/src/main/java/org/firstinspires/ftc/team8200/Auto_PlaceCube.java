@@ -25,9 +25,10 @@ public class Auto_PlaceCube extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     // Static variables for general use
-    static final double DRIVE_SPEED = 0.5;
-    static final double DRIVE_SLOW_SPEED = 0.1;
+    static final double DRIVE_SPEED = .5;
+    static final double DRIVE_SLOW_SPEED = .1;
     static final double TURN_SPEED = 1;
+    static final double ARM_CLOSED = .3;
 
     // Static variables for encoders
     static final double COUNTS_PER_MOTOR_REV = 280; // Source: NeveRest 40 Specifications Sheet
@@ -56,6 +57,8 @@ public class Auto_PlaceCube extends LinearOpMode {
         waitForStart();
 
         // Run methods in sequence
+        pickUpCube();
+        sleep(1000);
         readPattern();
         sleep(1000);
         moveToGems();
@@ -69,6 +72,12 @@ public class Auto_PlaceCube extends LinearOpMode {
         findColumn();
         sleep(1000);
         dropGlyph();
+    }
+
+    // Pick up the cube
+    public void pickUpCube() {
+        robot.holdBottomLeft.setPosition(ARM_CLOSED);
+        robot.holdBottomRight.setPosition(ARM_CLOSED);
     }
 
     // Read and store the value of the pattern
@@ -187,18 +196,12 @@ public class Auto_PlaceCube extends LinearOpMode {
 
             if (vuMark == RelicRecoveryVuMark.LEFT) {
                 vuMarkPattern = "left";
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                telemetry.update();
                 return vuMarkPattern;
             } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                 vuMarkPattern = "left";
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                telemetry.update();
                 return vuMarkPattern;
             } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 vuMarkPattern = "right";
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                telemetry.update();
                 return vuMarkPattern;
             } else {
                 vuMarkPattern = "";

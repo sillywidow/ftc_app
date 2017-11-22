@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Vuforia Test", group ="Testing")
-public class VuforiaTest extends LinearOpMode {
+public class Test_Vuforia extends LinearOpMode {
     // Create Vuforia object
     VuforiaLocalizer vuforia;
 

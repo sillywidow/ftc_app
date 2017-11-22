@@ -6,17 +6,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hardware {
     // Universal OpMode Properties
+    public DcMotor elevator;
     public DcMotor frontMotorLeft;
     public DcMotor frontMotorRight;
     public DcMotor backMotorLeft;
     public DcMotor backMotorRight;
-    public DcMotor collectorMotorLeft;
-    public DcMotor collectorMotorRight;
-    public DcMotor elevator;
-    public DcMotor arm;
-    public Servo collectorServoLeft;
-    public Servo collectorServoRight;
-    // Create 4 servos for gripper
+    public DcMotor harvesterMotorLeft;
+    public DcMotor harvesterMotorRight;
+
+    public Servo arm;
+    public Servo harvesterServoLeft;
+    public Servo harvesterServoRight;
+    public Servo holdTopLeft;
+    public Servo holdTopRight;
+    public Servo holdBottomLeft;
+    public Servo holdBottomRight;
 
     // Local OpMode Properties
     HardwareMap hwMap;
@@ -30,16 +34,21 @@ public class Hardware {
         hwMap = hardwareMap;
 
         // Names for Hardware Configuration
-        frontMotorLeft = hwMap.get(DcMotor.class, "frontmotorleft");
-        frontMotorRight = hwMap.get(DcMotor.class, "frontmotorright");
-        backMotorLeft = hwMap.get(DcMotor.class, "backmotorleft");
-        backMotorRight = hwMap.get(DcMotor.class, "backmotorright");
-        collectorMotorLeft = hwMap.get(DcMotor.class, "collectormotorleft");
-        collectorMotorRight = hwMap.get(DcMotor.class, "collectormotorright");
         elevator = hwMap.get(DcMotor.class, "elevator");
-        arm = hwMap.get(DcMotor.class, "arm");
-        collectorServoLeft = hwMap.get(Servo.class, "collectorservoleft");
-        collectorServoRight = hwMap.get(Servo.class, "collectorservoright");
+        frontMotorLeft = hwMap.get(DcMotor.class, "frontMotorLeft");
+        frontMotorRight = hwMap.get(DcMotor.class, "frontMotorRight");
+        backMotorLeft = hwMap.get(DcMotor.class, "backMotorLeft");
+        backMotorRight = hwMap.get(DcMotor.class, "backMotorRight");
+        harvesterMotorLeft = hwMap.get(DcMotor.class, "harvesterMotorLeft");
+        harvesterMotorRight = hwMap.get(DcMotor.class, "harvesterMotorRight");
+
+        arm = hwMap.get(Servo.class, "arm");
+        harvesterServoLeft = hwMap.get(Servo.class, "harvesterServoLeft");
+        harvesterServoRight = hwMap.get(Servo.class, "harvesterServoRight");
+        holdTopLeft = hwMap.get(Servo.class, "holdTopLeft");
+        holdTopRight = hwMap.get(Servo.class, "holdTopRight");
+        holdBottomLeft = hwMap.get(Servo.class, "holdBottomLeft");
+        holdBottomRight = hwMap.get(Servo.class, "holdBottomRight");
 
         // Motor Direction
         frontMotorLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -48,16 +57,21 @@ public class Hardware {
         backMotorRight.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
 
         // Set motors and servos to initial position
+        elevator.setPower(0);
         frontMotorLeft.setPower(0);
         frontMotorRight.setPower(0);
         backMotorLeft.setPower(0);
         backMotorRight.setPower(0);
-        collectorMotorLeft.setPower(0);
-        collectorMotorRight.setPower(0);
-        elevator.setPower(0);
-        arm.setPower(0);
-        collectorServoLeft.setPosition(0);
-        collectorServoRight.setPosition(0);
+        harvesterMotorLeft.setPower(0);
+        harvesterMotorRight.setPower(0);
+        arm.setPosition(0);
+        
+        harvesterServoLeft.setPosition(0);
+        harvesterServoLeft.setPosition(0);
+        holdTopLeft.setPosition(0);
+        holdTopRight.setPosition(0);
+        holdBottomLeft.setPosition(0);
+        holdBottomRight.setPosition(0);
 
         // Enable encoders
         backMotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

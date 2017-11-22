@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.Locale;
 
 @Autonomous(name="Color Test", group ="Testing")
-public class SensorTest extends LinearOpMode {
+public class Test_Sensor extends LinearOpMode {
     // Import objects used in robot
     ColorSensor colorSensor;
     DistanceSensor distanceSensor;
